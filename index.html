@@ -10,25 +10,28 @@
 				return [ 0, -9.81 * m, 0 ]
 			}
 			
+			var sphere, planes, forces, canvas, physics
+
 			function setup() {
 
-				var
 				sphere = {
 					position: [200, 200, 0],
 					velocity: [0,   0,   0],
 					radius:   20,
 					mass:     1
-				},
+				}
+
 				planes = [
 					[ 0, 1, 0, 50 ],
 					[ 1, 0, 0, 50 ]
-				],
+				]
+
 				forces = [ gravity ]
 
-				var canvas = new Canvas("trololo");
-				var physics = new Physics(sphere, planes, forces, 1/60)
+				canvas = new Canvas("trololo")
+				physics = new Physics(sphere, planes, forces, 1/60)
 
-				function nextStep() {
+				nextStep = function() {
 					
 					physics.computeNextTick()
 					draw()
@@ -48,6 +51,8 @@
 					}
 				}
 				
+				// nextStep()
+
 				setInterval(nextStep, 1000 / 60)
 			}
 			

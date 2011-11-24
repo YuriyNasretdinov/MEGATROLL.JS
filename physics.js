@@ -45,10 +45,12 @@ Physics.prototype = {
 		    R      = sphere.radius,
 		    x      = sphere.position,
 		    v      = sphere.velocity
-		
+
 		var newCoords = this._integrate(),
 		    x_     = newCoords.position,
 		    v_     = newCoords.velocity
+		
+		// console.log(newCoords)
 		
 		if( veceq(x, x_) ) return
 
@@ -137,7 +139,7 @@ Physics.prototype = {
 		var f_ = this._getForce(x_, v12),
 		    a_ = vecscale(f, 1/m)
 		// calculate v(t + dt) = v(t + dt/2) + a(t + dt) * dt/2
-		var v_ = v12 + vecscale(a_, dt/2)
+		var v_ = vecadd(v12, vecscale(a_, dt/2))
 
 		return {
 			position: x_,
