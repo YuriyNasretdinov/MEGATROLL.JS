@@ -30,9 +30,11 @@ Canvas.prototype = {
 		if ( B != 0 ) {
 			this.ctx.moveTo( 0, (this.canvas.height - D/B) );
 			this.ctx.lineTo( this.canvas.width, this.canvas.height - ( D - A*this.canvas.width )/B );
-		} else {
+		} else if ( A != 0 ) {
 			this.ctx.moveTo( D/A, 0 );
 			this.ctx.lineTo( ( D - B*this.canvas.height )/A, this.canvas.height );
+		} else {
+			throw new Error('fuck!');
 		}
 		this.ctx.closePath();
 		this.ctx.stroke();
