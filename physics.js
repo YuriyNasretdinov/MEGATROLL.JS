@@ -27,6 +27,8 @@ Physics.prototype = {
 
 	dt: 1./120.,
 
+	eps: 1e-10, // epsilon (too small value for computation)
+
 	construct: function(sphere, planes, forces, dt) {
 		
 		this.sphere = sphere
@@ -95,10 +97,10 @@ Physics.prototype = {
 	_integrate: function() {
 		
 		var sphere = this.sphere,
-		    m  = sphere.mass,
-		    x  = sphere.position,
-		    v  = sphere.velocity,
-		    dt = this.dt
+		    m      = sphere.mass,
+		    x      = sphere.position,
+		    v      = sphere.velocity,
+		    dt     = this.dt
 		
 		// compute a(t)
 
@@ -119,6 +121,63 @@ Physics.prototype = {
 		return {
 			position: x_,
 			velocity: v_
+		}
+	},
+
+	_checkPlaneSphereIntersection: function(plane, R, x, v, x_, v_) {
+		
+		var A = plane[0],
+		    B = plane[1],
+		    C = plane[2],
+		    D = plane[3]
+		
+		// plane normal vector
+		var n  = [A,B,C],
+		    dx = vecsub(x_, x)
+
+		if( vecsmul(dx, n) > 0 ) n = vecscale(n, -1)
+
+		var dx_len = vecabs(dx),
+		    n_len  = vecabs(n)
+
+		// check intersection between x and x_ + r
+
+		// r = ( R / cos(alp) ) * dx / |dx|
+
+		var cosalp = Math.abs(vecsmul(dx, n) / dx_len / n_len)
+
+		if(cosalp < this.eps) return false
+
+		var r = vecscale( dx, R / cosalp / dx_len )
+
+		var a = x,
+		    b = vecadd(x_, r),
+		    a_n = vecsmul(a,n),
+		    b_n = vecsmul(b,n)
+
+		var sign_a = a_n - D > 0 ? 1 : -1,
+		    sign_b = b_n - D > 0 ? 1 : -1
+		
+		if(sign_a == sign_b) return false
+
+		// point of intersection of [a,b] with plane
+		var r0 = vecadd( a, vecscale( vecsub(b,a), (D - a_n) / (b_n - a_n) ) ),
+		// center of sphere lying on the plane
+		    o = vecsub(r0, r),
+		    oa = vecsub(a, o)
+
+		// mirrored vector by n
+		var n1 = vecvmul( vecvmul(oa, n), n ),
+		if( vecsmul(oa, n1) < 0 ) n1 = vecscale(n1, -1)
+
+		var sinalp = Math.sqrt( 1 - cosalp * cosalp ),
+		    c = vecsub(oa, vecscale( n1, 2*vecabs(oa)*sinalp/vecabs(n1) ) )
+		
+		var new_v = vecadd( v, vecscale( vecsub(v_ - v), vecabs( vecsub(x, o) ) / dx_len ) )
+
+		return {
+			position: o,
+			velocity: vecscale( c, vecabs(new_v) / vecabs(c) )
 		}
 	}
 
