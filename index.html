@@ -42,12 +42,12 @@
 
 					canvas.circle(pos[0], pos[1], pos[2], sphere.radius)
 
-					for(var i = 0; i < planes; i++) {
+					for(var i = 0; i < planes.length; i++) {
 						var p = planes[i]
 						canvas.plane(p[0], p[1], p[2], p[3])
 					}
 				}
-
+				
 				setInterval(nextStep, 1000 / 60)
 			}
 			
