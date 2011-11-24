@@ -188,7 +188,7 @@ Physics.prototype = {
 		    oa = vecsub(a, o)
 
 		// mirrored vector by n
-		var n1 = vecvmul( vecvmul(oa, n), n ),
+		var n1 = vecvmul( vecvmul(oa, n), n )
 		if( vecsmul(oa, n1) < 0 ) n1 = vecscale(n1, -1)
 
 		var sinalp = Math.sqrt( 1 - cosalp * cosalp ),
