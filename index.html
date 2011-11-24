@@ -7,7 +7,7 @@
 		<script type="text/javascript">
 			
 			function gravity(x, v, m) {
-				return [ 0, -9.81 * m, 0 ]
+				return [ 0, -100 * m, 0 ]
 			}
 			
 			var sphere, planes, forces, canvas, physics
@@ -51,8 +51,6 @@
 					}
 				}
 				
-				// nextStep()
-
 				setInterval(nextStep, 1000 / 60)
 			}
 			

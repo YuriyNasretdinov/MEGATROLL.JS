@@ -50,8 +50,6 @@ Physics.prototype = {
 		    x_     = newCoords.position,
 		    v_     = newCoords.velocity
 		
-		// console.log(newCoords)
-		
 		if( veceq(x, x_) ) return
 
 		var intersections = [],
@@ -193,8 +191,11 @@ Physics.prototype = {
 		var n1 = vecvmul( vecvmul(oa, n), n )
 		if( vecsmul(oa, n1) < 0 ) n1 = vecscale(n1, -1)
 
-		var sinalp = Math.sqrt( 1 - cosalp * cosalp ),
-		    c = vecsub(oa, vecscale( n1, 2*vecabs(oa)*sinalp/vecabs(n1) ) )
+		var sinalp = Math.sqrt( 1 - cosalp * cosalp )
+		var c
+		
+		if(sinalp < this.eps) c = oa
+		else                  c = vecsub(oa, vecscale( n1, 2*vecabs(oa)*sinalp/vecabs(n1) ) )
 		
 		var new_v = vecadd( v, vecscale( vecsub(v_, v), vecabs( vecsub(x, o) ) / dx_len ) )
 
