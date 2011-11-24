@@ -26,5 +26,5 @@ function vecvmul( v1, v2 ) {
 }
 
 function vecabs( v ) {
-	return sqrt( sqr(v[0]) + sqr(v[1]) + sqr(v[2]) );
+	return Math.sqrt( sqr(v[0]) + sqr(v[1]) + sqr(v[2]) );
 }
