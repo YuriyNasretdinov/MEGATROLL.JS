@@ -52,11 +52,13 @@ Physics.prototype = {
 		
 		if( veceq(x, x_) ) return
 
-		var intersections = []
+		var intersections = [],
+		    i,
+		    info
 
-		for(var i = 0; i < planes.length; i++ ) {
+		for(i = 0; i < planes.length; i++ ) {
 			
-			var info = this._checkPlaneSphereIntersection(planes[i], R, x, v, x_, v_)
+			info = this._checkPlaneSphereIntersection(planes[i], R, x, v, x_, v_)
 
 			if(info !== false) {
 				intersections.push(info)
@@ -69,11 +71,30 @@ Physics.prototype = {
 			
 			sphere.position = x_
 			sphere.velocity = v_
-			return
 
 		} else {
 			
-			throw new Error('Needs to be implemeted')
+			var minDist = null,
+			    minIdx  = null,
+			    dx
+
+			for(i = 0; i < intersections.length; i++) {
+				
+				info = intersections[i]
+				dx_len = vecabs(vecsub(x, info.position))
+
+				if(minDist === null || minDist > dx_len) {
+					
+					minDist = dx_len
+					minIdx = i
+
+				}
+
+			}
+
+			info = intersections[minIdx]
+			sphere.position = info.position
+			sphere.velocity = info.velocity
 
 		}
 
