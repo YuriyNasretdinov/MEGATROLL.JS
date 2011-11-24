@@ -1,5 +1,5 @@
 var Physics = function() {
-	this.construct.apply(this, arguments)
+	this.__construct.apply(this, arguments)
 }
 
 Physics.prototype = {
@@ -22,14 +22,14 @@ Physics.prototype = {
 		// and also return vector
 
 
-		// function( position, velocity ) { return [x,y,z] }
+		// function( position, velocity, m ) { return [x,y,z] }
 	],
 
 	dt: 1./120.,
 
 	eps: 1e-10, // epsilon (too small value for computation)
 
-	construct: function(sphere, planes, forces, dt) {
+	__construct: function(sphere, planes, forces, dt) {
 		
 		this.sphere = sphere
 		this.planes = planes
@@ -103,11 +103,11 @@ Physics.prototype = {
 
 	_getForce: function(position, velocity) {
 		
-		var f = [0.,0.,0.], forces = this.forces
+		var f = [0.,0.,0.], forces = this.forces, m = this.sphere.mass
 
 		for(var i = 0; i < forces.length; i++) {
 			
-			f = vecadd(f, forces[i](position, velocity))
+			f = vecadd(f, forces[i](position, velocity, m))
 
 		}
 

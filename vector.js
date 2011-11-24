@@ -28,3 +28,7 @@ function vecvmul( v1, v2 ) {
 function vecabs( v ) {
 	return Math.sqrt( sqr(v[0]) + sqr(v[1]) + sqr(v[2]) );
 }
+
+function veceq( v1, v2 ) {
+	return vecabs( vecsub(v1, v2) ) < 1e-14
+}

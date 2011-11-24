@@ -1,22 +1,62 @@
 <html>
-  <head>
-    <title>Canvas</title>
-	<script type="text/javascript" src="canvas.js"></script>
-	<script type="text/javascript" src="vector.js"></script>
-	<script type="text/javascript" src="physics.js"></script>
-    <script type="text/javascript">
-      function draw(){
-		var canvas = new Canvas("trololo");
-        canvas.circle(150, 150, 150, 100);
-		canvas.plane(1, 0, 0, 100);
-		setTimeout(function() { canvas.clear(); setTimeout(draw, 1000); }, 1000);
-      }
-    </script>
-    <style type="text/css">
-      canvas { border: 1px solid black; }
-    </style>
-  </head>
-  <body onload="draw();">
-    <canvas id="trololo" width="400" height="400"></canvas>
-  </body>
+	<head>
+		<title>Canvas</title>
+		<script type="text/javascript" src="canvas.js"></script>
+		<script type="text/javascript" src="vector.js"></script>
+		<script type="text/javascript" src="physics.js"></script>
+		<script type="text/javascript">
+			
+			function gravity(x, v, m) {
+				return [ 0, -9.81 * m, 0 ]
+			}
+			
+			function setup() {
+
+				var
+				sphere = {
+					position: [200, 200, 0],
+					velocity: [0,   0,   0],
+					radius:   20,
+					mass:     1
+				},
+				planes = [
+					[ 0, 1, 0, 50 ],
+					[ 1, 0, 0, 50 ]
+				],
+				forces = [ gravity ]
+
+				var canvas = new Canvas("trololo");
+				var physics = new Physics(sphere, planes, forces, 1/60)
+
+				function nextStep() {
+					
+					physics.computeNextTick()
+					draw()
+
+				}
+
+				function draw(){
+					canvas.clear()
+
+					var pos = sphere.position
+
+					canvas.circle(pos[0], pos[1], pos[2], sphere.radius)
+
+					for(var i = 0; i < planes; i++) {
+						var p = planes[i]
+						canvas.plane(p[0], p[1], p[2], p[3])
+					}
+				}
+
+				setInterval(nextStep, 1000 / 60)
+			}
+			
+		</script>
+		<style type="text/css">
+			canvas { border: 1px solid black; }
+		</style>
+	</head>
+	<body onload="setup()">
+		<canvas id="trololo" width="400" height="400"></canvas>
+	</body>
 </html>
