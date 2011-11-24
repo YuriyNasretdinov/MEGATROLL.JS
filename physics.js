@@ -194,7 +194,7 @@ Physics.prototype = {
 		var sinalp = Math.sqrt( 1 - cosalp * cosalp ),
 		    c = vecsub(oa, vecscale( n1, 2*vecabs(oa)*sinalp/vecabs(n1) ) )
 		
-		var new_v = vecadd( v, vecscale( vecsub(v_ - v), vecabs( vecsub(x, o) ) / dx_len ) )
+		var new_v = vecadd( v, vecscale( vecsub(v_, v), vecabs( vecsub(x, o) ) / dx_len ) )
 
 		return {
 			position: o,
